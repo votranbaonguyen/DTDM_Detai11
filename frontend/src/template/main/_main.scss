@@ -1,0 +1,37 @@
+.main-container{
+    width: 100%;
+    .navigation-bar{
+        height: 100vh;
+
+        h1{
+            color: white;
+            background-color: $main-text-color-black;
+            margin: 0;
+            padding-block: 25px;
+        }
+
+        .main-menu{
+            height: 100%;
+        }
+    }
+
+    .top-part{
+        display: flex;
+        justify-content: flex-end;
+        background-color: $main-text-color-black;
+        color: white;
+        padding: 5px 30px;
+        
+        .user-part{
+            display: flex;
+            align-items: center;
+            .user-info{
+                background-color: $main-text-color-blue;
+                padding: 5px 10px;
+                border-radius: 35px;
+                cursor: pointer;
+            }
+
+        }
+    }
+}
