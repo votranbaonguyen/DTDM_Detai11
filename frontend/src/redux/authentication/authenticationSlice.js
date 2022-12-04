@@ -4,6 +4,7 @@ import { LoginUrl } from "../../services/api";
 
 const initialState = {
   userid:0,
+  username: "",
   loginStatus: false,
 };
 
@@ -42,7 +43,8 @@ export const authenticationSlice = createSlice({
 
     builder.addCase(login.fulfilled, (state,action) => {
         if(localStorage.getItem("userid")){
-          state.userid = action.payload
+          state.userid = action.payload.userid
+          state.username = action.payload.username
           state.loginStatus = true
           state.loading = false
         }

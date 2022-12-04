@@ -5,6 +5,7 @@ import { AllTable } from "./pages/alltable/AllTable";
 import { Main } from "./template/main/Main";
 import { MyTable } from "./pages/table/MyTable";
 import { Login } from "./pages/authentication/Login";
+import TestModal from "./components/recordModal/TestModal";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
             <Route path="/table/:tablename" element={<MyTable/>} />
           </Route>
           <Route index path="/login" element={<Login/>}/>
+          <Route index path="/test" element={<TestModal/>}/>
         </Routes>
       </BrowserRouter>
     </div>

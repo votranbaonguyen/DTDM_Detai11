@@ -13,14 +13,18 @@ export const poppupNoti = {
     },
 
     createTableSuccess: () => {
-        notiBody("New table have been created","success")
+        notiBody("New table has been created","success")
     },
 
-    addAddressSuccess: () => {
-        notiBody("A new address have been added","success")
+    addandeditRecordSuccess: () => {
+        notiBody("Your new change has been saved","success")
     },
 
-    deleteAddressSuccess: () => {
-        notiBody("Delete address success","success")
+    deleteTableSuccess: () => {
+        notiBody("Delete table success","success")
+    },
+
+    deleteItemSuccess: () => {
+        notiBody("Delete item success","success")
     }
 }

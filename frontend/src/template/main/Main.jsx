@@ -20,6 +20,7 @@ const { Header, Content, Footer, Sider } = Layout;
 export const Main = () => {
 
     const { tableList, getTableLoading, loading } = useSelector(store => store.allTableReducer)
+    const { username } = useSelector(store => store.authenticationReducer)
 
     function getItem(label, key, icon, children) {
         return {
@@ -64,7 +65,7 @@ export const Main = () => {
                 </Col>
                 <Col xs={24} sm={19} md={19} lg={19} xl={19} xxl={19}>
                     <div className="top-part">
-                        <UserPart userName="Bao Nguyen" />
+                        <UserPart userName={username} />
                     </div>
                     <Outlet />
                 </Col>

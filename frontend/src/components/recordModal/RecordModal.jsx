@@ -1,27 +1,32 @@
 import React, { useState } from 'react'
-import { Button, Checkbox, Form, Input, Modal } from 'antd'
+import { Button, Checkbox, Form, Input, Modal, Space, Spin } from 'antd'
 import { useSelector } from 'react-redux';
 import {
-    PlusOutlined
+    PlusOutlined,
+    MinusCircleOutlined
 } from '@ant-design/icons';
 
 export const RecordModal = ({ isModalOpen, handleOk, handleCancel, form, modalType }) => {
-    const { items, atributes, loading } = useSelector(store => store.tableReducer)
+    const { addLoading, baseAttr, atributes, loading } = useSelector(store => store.tableReducer)
 
-    const [attrList,setAttrList] = useState([])
 
     const onFinishFailed = (errorInfo) => {
         console.log('Failed:', errorInfo);
     };
 
     const renderFormItem = () => {
-        return atributes.map((attr, index) => {
+        let a
+        if(modalType === 'Edit')
+            a = atributes
+        else a = baseAttr
+        return a.map((attr, index) => {
             return <Form.Item
                 label={attr}
                 name={attr}
                 labelCol={5}
                 wrapperCol={19}
                 key={index}
+
                 rules={[
                     {
                         required: true,
@@ -29,56 +34,11 @@ export const RecordModal = ({ isModalOpen, handleOk, handleCancel, form, modalTy
                     },
                 ]}
             >
-                <Input />
+                <Input disabled={modalType==="Edit" ? baseAttr[0] === attr ||  baseAttr[1] === attr? true : false : false}/>
             </Form.Item>
         })
     }
 
-    const addField = () => {
-        const newAttrList = attrList
-        newAttrList.push({
-            atrributekey: "attributekey",
-            atrributevalue: "attributevalue",
-            atrributekeylabel: "Attribute Key",
-            atrributevaluelabel: "Attribute Value"
-        })
-        setAttrList(newAttrList)
-    }
-    
-    const renderFlankFormItem = () => {
-        return attrList.map((item,index) => {
-            return <div style={{display:"flex",width:"100%"}} key={index}>
-                <Form.Item
-                label= {`${item.atrributekeylabel} ${index}`}
-                name={`${item.atrributekey}${index}`}
-                labelCol={5}
-                wrapperCol={19}
-                rules={[
-                    {
-                        required: true,
-                        message: `Please input the ${item.atrributekey}!`,
-                    },
-                ]}
-            >
-                <Input />
-            </Form.Item>
-            <Form.Item
-                label= {`${item.atrributevaluelabel} ${index}`}
-                name={`${item.atrributevalue}${index}`}
-                labelCol={5}
-                wrapperCol={19}
-                rules={[
-                    {
-                        required: true,
-                        message: `Please input the ${item.atrributevalue}!`,
-                    },
-                ]}
-            >
-                <Input />
-            </Form.Item>
-            </div>
-        })
-    }
     return (
         <Modal
             title={`${modalType} Record`}
@@ -86,7 +46,7 @@ export const RecordModal = ({ isModalOpen, handleOk, handleCancel, form, modalTy
             onOk={handleOk}
             onCancel={handleCancel}
             footer={false}
-            width={600}
+            width={800}
         >
             <Form
                 name="basic"
@@ -105,29 +65,69 @@ export const RecordModal = ({ isModalOpen, handleOk, handleCancel, form, modalTy
                 autoComplete="off"
             >
                 {renderFormItem()}
-                {renderFlankFormItem()}
-                <Form.Item
-                wrapperCol={{
-                    span: 24,
-                }}
-                >
-                    
-                    <Button
-                        type="dashed"
-                        onClick={addField}
-                        style={{
-                            width: '60%',
-                        }}
-                        icon={<PlusOutlined />}
-                    >
-                        Add field
-                    </Button>
+                {modalType === "Add" ?
+                <Form.List name="additionalKey">
+                    {(fields, { add, remove }) => (
+                        <>
+                            {fields.map((field, index) => (
+                                <Space key={index} align="baseline" style={{ justifyContent: "space-between", width:"100%" }}>
+                                    <Form.Item
+                                        {...field}
+                                        label={`Attribute Key ${index}`}
+                                        name={[field.name, `attributekey${index}`]}
+                                        labelCol={{
+                                            span: 10,
+                                        }}
+                                        wrapperCol={{
+                                            span: 14,
+                                        }}
+                                        rules={[
+                                            {
+                                                required: true,
+                                                message: 'Missing price',
+                                            },
+                                        ]}
+                                    >
+                                        <Input />
+                                    </Form.Item>
+                                    <Form.Item
+                                        {...field}
+                                        label={`Attribute Value ${index}`}
+                                        name={[field.name, `attributevalue${index}`]}
+                                        labelCol={{
+                                            span: 10,
+                                        }}
+                                        wrapperCol={{
+                                            span: 14,
+                                        }}
+                                        rules={[
+                                            {
+                                                required: true,
+                                                message: 'Missing price',
+                                            },
+                                        ]}
+                                    >
+                                        <Input />
+                                    </Form.Item>
 
-                </Form.Item>
+                                    <MinusCircleOutlined onClick={() => remove(field.name)} />
+                                </Space>
+                            ))}
+
+                            <Form.Item>
+                                <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
+                                    Add Attribute
+                                </Button>
+                            </Form.Item>
+                        </>
+                    )}
+                </Form.List>
+                : ""
+                }
                 <div style={{ textAlign: "right" }}>
                     <Button style={{ marginRight: "15px" }} onClick={handleCancel}>Cancel</Button>
-                    <Button type="primary" htmlType="submit">
-                        {modalType}
+                    <Button type="primary" htmlType="submit" disabled={addLoading}>
+                        {addLoading ? <Spin size="small" /> : ""} {modalType}
                     </Button>
                 </div>
 

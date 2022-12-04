@@ -1,11 +1,14 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { GetAllItemByTableNameUrl } from "../../services/api";
+import { AddAndUpdateItemUrl, DeleteItemUrl, GetAllItemByTableNameUrl } from "../../services/api";
+import { poppupNoti } from "../../util/notification/Notification";
 
 const initialState = {
   items: [],
   atributes: [],
+  baseAttr: [],
   loading: false,
+  addLoading: false
 };
 
 export const getItems = createAsyncThunk(
@@ -21,6 +24,35 @@ export const getItems = createAsyncThunk(
   }
 );
 
+export const deleteItem = createAsyncThunk(
+  "table/deleteitem",
+  async (body) => {
+    const response = await fetch(DeleteItemUrl, {
+      method: "POST",
+      body 
+    });
+    if(response.status === 200){
+      poppupNoti.deleteItemSuccess()
+    }
+    return response.json();
+  }
+);
+
+export const addAndUpdateItem = createAsyncThunk(
+  "table/addandupdateitem",
+  async (body) => {
+    const response = await fetch(AddAndUpdateItemUrl, {
+      method: "POST",
+      body,
+    });
+    if(response.status === 200) {
+      poppupNoti.addandeditRecordSuccess()
+    }
+
+    return response.json();
+  }
+);
+
 export const tableSlice = createSlice({
   name: "table",
   initialState,
@@ -29,7 +61,7 @@ export const tableSlice = createSlice({
       const a = []
       a.push(action.payload.partitionkey)
       a.push(action.payload.sortkey)
-      state.atributes = a
+      state.baseAttr = a
     }
   },
   extraReducers: (builder) => {
@@ -39,6 +71,7 @@ export const tableSlice = createSlice({
 
     builder.addCase(getItems.fulfilled, (state, action) => {
       state.items = action.payload;
+      state.atributes = []
       state.items.forEach((item) => {
         const vals = Object.keys(item).map((key) => key);
         vals.forEach((attr) => {
@@ -64,6 +97,32 @@ export const tableSlice = createSlice({
 
     builder.addCase(getItems.rejected, (state) => {
       state.loading = false;
+    });
+
+    builder.addCase(addAndUpdateItem.pending, (state) => {
+      state.loading = true;
+    });
+
+    builder.addCase(addAndUpdateItem.fulfilled, (state,action) => {
+      console.log(action.payload)
+      state.loading = true;
+    });
+
+    builder.addCase(addAndUpdateItem.rejected, (state) => {
+      state.loading = true;
+    });
+
+    builder.addCase(deleteItem.pending, (state) => {
+      state.loading = true;
+    });
+
+    builder.addCase(deleteItem.fulfilled, (state,action) => {
+      console.log(action.payload)
+      state.loading = true;
+    });
+
+    builder.addCase(deleteItem.rejected, (state) => {
+      state.loading = true;
     });
   },
 });
