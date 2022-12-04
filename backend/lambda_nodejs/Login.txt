@@ -51,7 +51,10 @@ export const handler = async(event, response) => {
     response = {
         statusCode: 200,
         //body: JSON.stringify('Login successful!', data.Items),
-        body: JSON.stringify(data.Items.UserID),
+        body: JSON.stringify({
+          userid: data.Items[0].UserID,
+          username: data.Items[0].UserName
+        }),
     };
   } catch (err) {
     response = {
