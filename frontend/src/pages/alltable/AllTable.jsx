@@ -6,10 +6,15 @@ import {
 import { TableModal } from '../../components/tablemodal/TableModal';
 import {createTable,getAllTable} from '../../redux/alltable/allTableSlice'
 import {useDispatch, useSelector} from 'react-redux'
+import { useNavigate } from 'react-router-dom';
 
 
 export const AllTable = () => {
-
+  const navigate = useNavigate()
+  const {userid, loginStatus} = useSelector(store => store.authenticationReducer)
+  if(!loginStatus){
+    navigate("/login")
+  }
   const columns = [
     {
       title: 'Table Name',
@@ -58,7 +63,11 @@ export const AllTable = () => {
   };
 
   const handleOk =async (value) => {
-    await dispatch(createTable(JSON.stringify(value)))
+    const a = {
+      ...value,
+      UserID: userid
+    }
+    await dispatch(createTable(JSON.stringify(a)))
     setIsModalOpen(false);
     form.resetFields();
   };
@@ -70,11 +79,16 @@ export const AllTable = () => {
   const [form] = Form.useForm();
 
   useEffect(() => {
-    dispatch(getAllTable())
+    const a = {
+      UserID: userid
+    }
+  
+    dispatch(getAllTable(JSON.stringify(a)))
+
   },[loading])
 
   return (
-
+    
     <div style={{textAlign:"right"}}>
         <TableModal isModalOpen={isModalOpen} handleOk={handleOk} handleCancel={handleCancel} form={form}/>
         <div style={{display:"flex", justifyContent:"space-between",margin:"15px 30px"}}> 

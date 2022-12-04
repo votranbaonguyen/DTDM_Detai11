@@ -43,7 +43,7 @@ export const handler = async(event, response) => {
     }, 
     FilterExpression:  "Password = :pw",
     KeyConditionExpression: "UserName = :un and UserID = :uid",
-    TableName: "UserManager",
+    TableName: "UserTable",
     
   };
   try {
@@ -51,7 +51,7 @@ export const handler = async(event, response) => {
     response = {
         statusCode: 200,
         //body: JSON.stringify('Login successful!', data.Items),
-        body: JSON.stringify(data.Items),
+        body: JSON.stringify(data.Items.UserID),
     };
   } catch (err) {
     response = {

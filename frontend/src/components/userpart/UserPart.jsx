@@ -3,35 +3,36 @@ import React from 'react'
 import {
     UserOutlined,
 } from '@ant-design/icons';
+import { useDispatch } from 'react-redux';
+import { logout } from '../../redux/authentication/authenticationSlice';
 
-const items = [
-    {
-        key: '1',
-        label: (
-            <a target="_blank" rel="noopener noreferrer" href="https://www.antgroup.com">
-                1st menu item
-            </a>
-        ),
-    },
-    {
-        key: '2',
-        label: (
-            <a target="_blank" rel="noopener noreferrer" href="https://www.aliyun.com">
-                2nd menu item
-            </a>
-        ),
-    },
-    {
-        key: '3',
-        label: (
-            <a target="_blank" rel="noopener noreferrer" href="https://www.luohanacademy.com">
-                3rd menu item
-            </a>
-        ),
-    },
-];
+
 
 export const UserPart = ({ userName }) => {
+    const dispatch = useDispatch()
+    const items = [
+        {
+            key: '1',
+            label: (
+                <a target="_blank" rel="noopener noreferrer" href="https://www.antgroup.com">
+                    User Info
+                </a>
+            ),
+        },
+        {
+            key: '2',
+            label: (
+                <span
+                target="_blank" 
+                rel="noopener noreferrer"
+                onClick={() => dispatch(logout())}
+                >
+                    Logout
+                </span>
+            ),
+        },
+      
+    ];
     return (
         <div className="user-part">
             <Dropdown

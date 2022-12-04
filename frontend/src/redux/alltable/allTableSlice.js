@@ -9,12 +9,6 @@ const initialState = {
     loading: false
 };
 
-const headers = {
-    aws_access_key_id:"ASIAZ2QU2A74DSCA3FN2",
-    aws_secret_access_key:"u/So3k2yLb/hna2QWoawHz1GX92FLm2xfM5Ddr95",
-    aws_session_token:"FwoGZXIvYXdzEMX//////////wEaDEsBOL2hemUkhw4HpSLPAQdWCqz8p3FDRjP/DLaeSw4Lhw7RUiYrPVxQlRyRJ4SxRZX36dXNXqkmRdXj9DVNCVpf9ziV8z//MlN7iqrLS4knMzobxqWK95z5kcc5hnbwBqfj1chTNn/kBiiiaBXQ77XraSM5Fw1/v4qy+Dr3fDFY7KEdgDBSWoO0WlZyXwyVcZG8BN08Is+Xop4VSXh1w1ph96fk6I7AvxacfE3JQ4jZ0f4pIIsUPYDNro5HhrQq2Rj2a/FtJfutZPoh0JuYcSa9K7rRhLLAHX7AhS+YEijJnLCcBjItALVeVGwE+BkdbiTHFz/JnMnWVWhdSCXrQAjMTnj93kvzXgU9CR7Jc7n/iqn7"
-}
-
 export const createTable = createAsyncThunk('alltable/createtable',
         async (tableData) => {
         const response = await fetch(CreateTableUrl,{
@@ -26,9 +20,12 @@ export const createTable = createAsyncThunk('alltable/createtable',
 )
 
 export const getAllTable = createAsyncThunk('alltable/getallltable',
-        async () => {
-            const res = await axios.get(GetAllTableUrl)
-            return res.data
+        async (userid) => {
+            const response = await fetch(GetAllTableUrl,{
+                method: 'POST',
+                body: userid
+            })
+            return response.json()
         }
 )
 
@@ -62,12 +59,13 @@ export const allTableSlice = createSlice({
         builder.addCase(getAllTable.fulfilled, (state,action) => {
             let newTableList = []
             newTableList = action.payload.map((table,index) => {
+            
                 return {
                     tablename: table.tablename,
                     partitionkey: table.AttributeDefinitions[0].AttributeName,
                     partitionkeytype: table.AttributeDefinitions[0].AttributeType,
-                    sortkey: table.AttributeDefinitions[0].AttributeName,
-                    sortkeytype: table.AttributeDefinitions[0].AttributeType,
+                    sortkey: table.AttributeDefinitions[1].AttributeName,
+                    sortkeytype: table.AttributeDefinitions[1].AttributeType,
                     key: index
                 }
             })

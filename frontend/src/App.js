@@ -12,10 +12,10 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route element={<Main/>}>
-            <Route index path="/" element={<AllTable/>} />
-            <Route path="/table/:tableid" element={<MyTable/>} />
+            <Route path="/" element={<AllTable/>} />
+            <Route path="/table/:tablename" element={<MyTable/>} />
           </Route>
-          <Route path="/login" element={<Login/>}/>
+          <Route index path="/login" element={<Login/>}/>
         </Routes>
       </BrowserRouter>
     </div>

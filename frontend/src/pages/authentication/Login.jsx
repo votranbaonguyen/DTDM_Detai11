@@ -1,12 +1,27 @@
 import { Button, Checkbox, Form, Input } from 'antd';
+
 import React from 'react'
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { login } from '../../redux/authentication/authenticationSlice';
 
 export const Login = () => {
-    const onFinish = (values) => {
-        console.log('Success:', values);
+    const [form] = Form.useForm();
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+    const {loginStatus} = useSelector(store => store.authenticationReducer)
+    const onFinish = async (values)  => {
+        const a = {
+            ...values,
+            UserID: parseInt(values.UserID)
+        }
+        await dispatch(login(a))
+        if(localStorage.getItem("userid")){
+            navigate("/")
+        }
     };
     const onFinishFailed = (errorInfo) => {
-        console.log('Failed:', errorInfo);
+       
     };
 
     return (
@@ -30,11 +45,25 @@ export const Login = () => {
                     onFinish={onFinish}
                     onFinishFailed={onFinishFailed}
                     autoComplete="off"
-                    
+                    form={form}
                 >
                     <Form.Item
+                        label="UserID"
+                        name="UserID"
+                        labelCol={12}
+                        wrapperCol={12}
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Please input your userid!',
+                            },
+                        ]}
+                    >
+                        <Input/>
+                    </Form.Item>
+                    <Form.Item
                         label="Username"
-                        name="username"
+                        name="UserName"
                         labelCol={12}
                         wrapperCol={12}
                         rules={[
@@ -49,7 +78,7 @@ export const Login = () => {
 
                     <Form.Item
                         label="Password"
-                        name="password"
+                        name="Password"
                         labelCol={12}
                         wrapperCol={12}
                         rules={[
