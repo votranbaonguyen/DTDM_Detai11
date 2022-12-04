@@ -1,6 +1,7 @@
 CreateTable
 {
   "TableName": "TableName3",
+  "UserID": 1,
   "partitionkey": "partitionkey",
   "partitionkeytype": "S",
   "sortkey": "sortkey",
