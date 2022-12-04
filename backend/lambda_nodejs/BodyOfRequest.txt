@@ -1,0 +1,40 @@
+CreateTable
+{
+  "TableName": "TableName3",
+  "partitionkey": "partitionkey",
+  "partitionkeytype": "S",
+  "sortkey": "sortkey",
+  "sortkeytype": "S"
+}
+
+//////////////////////////////
+
+AddItemToTable
+{
+  "TableName": "TableName1",
+  "Item":
+  {
+    "partitionkey": "partitionkey3",
+    "sortkey": "sortkey3",
+    "tv": "tv"
+  }
+}
+Có thể thêm số lượng các thuộc tính vào Item tùy thích nhưng phải có partitionkey và sortkey
+
+/////////////////////////////////
+DeleteAnItem
+{
+    "TableName": "TableName1",
+    "Key": {
+        "partitionkey": "partitionkey3",
+        "sortkey": "sortkey3"
+    }
+}
+
+//////////////////////////////////
+DeleteTable
+{
+  "TableName": "TableName5"
+}
+
+////////////////////////
