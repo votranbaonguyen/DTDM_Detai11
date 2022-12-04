@@ -8,8 +8,7 @@ CreateTable
 }
 
 //////////////////////////////
-
-AddItemToTable
+AddAndUpdateItem
 {
   "TableName": "TableName1",
   "Item":
@@ -19,7 +18,18 @@ AddItemToTable
     "tv": "tv"
   }
 }
-Có thể thêm số lượng các thuộc tính vào Item tùy thích nhưng phải có partitionkey và sortkey
+Có thể thêm hoặc xóa số lượng các thuộc tính đưa vào Item tùy thích nhưng phải có partitionkey và sortkey
+ví dụ như sau:
+{
+  "TableName": "TableName1",
+  "Item":
+  {
+    "partitionkey": "partitionkey3",
+    "sortkey": "sortkey3",
+    "tv": "tv",
+    "tv1": "tv1"
+  }
+}
 
 /////////////////////////////////
 DeleteAnItem
