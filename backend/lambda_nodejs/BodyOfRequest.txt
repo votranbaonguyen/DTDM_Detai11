@@ -63,3 +63,7 @@ GetAllItemByTableName
 }
 
 //////////////////////////////////////////
+GetTableByUserId
+{
+    "UserID": 1
+}
