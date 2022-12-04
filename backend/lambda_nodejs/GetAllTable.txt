@@ -31,7 +31,7 @@ export const handler = async(event,response) => {
   } catch (err) {
     response = {
         statusCode: 400,
-        body: JSON.stringify('Table <' +  '> already exists or Invalid'),
+        body: JSON.stringify('Can not get table!'),
     };
     return response
   }
