@@ -4,6 +4,7 @@ import './sass/Main.scss'
 import { AllTable } from "./pages/alltable/AllTable";
 import { Main } from "./template/main/Main";
 import { MyTable } from "./pages/table/MyTable";
+import { Login } from "./pages/authentication/Login";
 
 function App() {
   return (
@@ -12,8 +13,9 @@ function App() {
         <Routes>
           <Route element={<Main/>}>
             <Route index path="/" element={<AllTable/>} />
-            <Route index path="/table/:tableid" element={<MyTable/>} />
+            <Route path="/table/:tableid" element={<MyTable/>} />
           </Route>
+          <Route path="/login" element={<Login/>}/>
         </Routes>
       </BrowserRouter>
     </div>

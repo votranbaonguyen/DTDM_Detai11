@@ -1,8 +1,40 @@
-import { Button, Checkbox, Form, Input, Modal } from 'antd'
-import React from 'react'
+import { Button, Checkbox, Form, Input, Modal, Select, Spin } from 'antd'
+import React, { useState } from 'react'
+import { useSelector } from 'react-redux'
 
-export const TableModal = ({ isModalOpen, handleOk, handleCancel,form }) => {
-    
+const options =
+    [
+        {
+            value: 'S',
+            label: 'String',
+        },
+        {
+            value: 'N',
+            label: 'Number',
+        }
+
+    ]
+
+export const TableModal = ({ isModalOpen, handleOk, handleCancel, form }) => {
+
+    const [partitionKeyType, setPartitionKeyType] = useState("S")
+    const [softKeyType, setSoftKeyType] = useState("S")
+
+    const {loading} = useSelector(store => store.allTableReducer)
+
+    const partitionKeyTypeChange = (value) => {
+        setPartitionKeyType(value)
+        form.setFieldsValue({
+            partitionkeytype: value
+        })
+    }
+    const softKeyTypeChange = (value) => {
+        setSoftKeyType(value)
+        form.setFieldsValue({
+            softKeyType: value
+        })
+    }
+
     const onFinishFailed = (errorInfo) => {
         console.log('Failed:', errorInfo);
     };
@@ -13,7 +45,8 @@ export const TableModal = ({ isModalOpen, handleOk, handleCancel,form }) => {
             onOk={handleOk}
             onCancel={handleCancel}
             footer={false}
-            width={600}   
+            width={600}
+            confirmLoading={loading}
         >
             <Form
                 name="basic"
@@ -32,14 +65,14 @@ export const TableModal = ({ isModalOpen, handleOk, handleCancel,form }) => {
                 autoComplete="off"
             >
                 <Form.Item
-                    label="Username"
-                    name="username"
+                    label="Table Name"
+                    name="TableName"
                     labelCol={5}
                     wrapperCol={19}
                     rules={[
                         {
                             required: true,
-                            message: 'Please input your username!',
+                            message: 'Please input the table name!',
                         },
                     ]}
                 >
@@ -47,24 +80,78 @@ export const TableModal = ({ isModalOpen, handleOk, handleCancel,form }) => {
                 </Form.Item>
 
                 <Form.Item
-                    label="Password"
-                    name="password"
+                    label="Partition Key"
+                    name="partitionkey"
                     labelCol={5}
                     wrapperCol={19}
                     rules={[
                         {
                             required: true,
-                            message: 'Please input your password!',
+                            message: 'Please input the partition key!',
                         },
                     ]}
                 >
-                    <Input.Password />
+                    <Input />
+                </Form.Item>
+                <Form.Item
+                    label="Partition Key Type"
+                    name="partitionkeytype"
+                    labelCol={5}
+                    wrapperCol={19}
+                    rules={[
+                        {
+                            required: true,
+                            message: 'Please input the partition key!',
+                        },
+                    ]}
+                >
+                    <Select
+                        style={{
+                            width: 120,
+                        }}
+                        onChange={partitionKeyTypeChange}
+                        options={options}
+                    />
+                </Form.Item>
+                <Form.Item
+                    label="Soft Key"
+                    name="sortkey"
+                    labelCol={5}
+                    wrapperCol={19}
+                    rules={[
+                        {
+                            required: true,
+                            message: 'Please input the partition key!',
+                        },
+                    ]}
+                >
+                    <Input />
+                </Form.Item>
+                <Form.Item
+                    label="Soft Key Type"
+                    name="sortkeytype"
+                    labelCol={5}
+                    wrapperCol={19}
+                    rules={[
+                        {
+                            required: true,
+                            message: 'Please input the partition key!',
+                        },
+                    ]}
+                >
+                    <Select
+                        style={{
+                            width: 120,
+                        }}
+                        onChange={softKeyTypeChange}
+                        options={options}
+                    />
                 </Form.Item>
 
-                <div style={{textAlign:"right"}}>
-                    <Button style={{marginRight:"15px"}} onClick={handleCancel}>Cancel</Button>
-                    <Button type="primary" htmlType="submit">
-                        Add
+                <div style={{ textAlign: "right" }}>
+                    <Button style={{ marginRight: "15px" }} onClick={handleCancel}>Cancel</Button>
+                    <Button type="primary" htmlType="submit" disabled={loading}>
+                        {loading ? <Spin size="small" /> : ""} Add
                     </Button>
                 </div>
 

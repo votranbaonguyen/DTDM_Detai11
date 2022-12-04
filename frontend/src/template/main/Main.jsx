@@ -7,38 +7,43 @@ import {
     TableOutlined
 } from '@ant-design/icons';
 import { UserPart } from '../../components/userpart/UserPart';
+import { useSelector } from 'react-redux';
 
 const { Header, Content, Footer, Sider } = Layout;
 
-function getItem(label, key, icon, children) {
-    return {
-        key,
-        icon,
-        children,
-        label,
-    };
-}
 
-const items = [
-    getItem(<Link to="">
-        All Table
-    </Link>, '1', <DatabaseOutlined />),
-    getItem('Table Detail', 'sub1', <TableOutlined />, [
-        getItem(<Link to="/table/1">
-            Table 1
-        </Link>, '2'),
-        getItem(<Link to="/table/2">
-            Table 2
-        </Link>, '3'),
-        getItem(<Link to="/table/3">
-            Table 3
-        </Link>, '4'),
-    ]),
-];
+
+
 
 
 
 export const Main = () => {
+
+    const { tableList, getTableLoading, loading } = useSelector(store => store.allTableReducer)
+
+    function getItem(label, key, icon, children) {
+        return {
+            key,
+            icon,
+            children,
+            label,
+        };
+    }
+
+    const getAllTable = () => {
+        return tableList.map((table) => {
+            return getItem(<Link to={`/table/${table.tablename}`}>
+                {table.tablename}
+            </Link>, table.tablename)
+        })
+    }
+
+    const items = [
+        getItem(<Link to="">
+            All Table
+        </Link>, '1', <DatabaseOutlined />),
+        getItem('Table Detail', 'sub1', <TableOutlined />,getAllTable()),
+    ];
 
     return (
         <div className="main-container">
@@ -47,7 +52,7 @@ export const Main = () => {
                     <div className="navigation-bar">
                         <h1>Team 1 - FreeDB</h1>
                         <Menu
-                            defaultSelectedKeys={['2']}
+                            defaultSelectedKeys={['1']}
                             defaultOpenKeys={['sub1']}
                             mode="inline"
                             theme="dark"

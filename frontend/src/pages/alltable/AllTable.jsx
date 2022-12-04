@@ -1,91 +1,64 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, Form, Space, Table, Tag } from 'antd';
 import {
     PlusOutlined
 } from '@ant-design/icons';
 import { TableModal } from '../../components/tablemodal/TableModal';
+import {createTable,getAllTable} from '../../redux/alltable/allTableSlice'
+import {useDispatch, useSelector} from 'react-redux'
 
-const columns = [
+
+export const AllTable = () => {
+
+  const columns = [
     {
-      title: 'Name',
-      dataIndex: 'name',
-      key: 'name',
+      title: 'Table Name',
+      dataIndex: 'tablename',
+      key: 'tablename',
       render: (text) => <a>{text}</a>,
     },
     {
-      title: 'Age',
-      dataIndex: 'age',
-      key: 'age',
+      title: 'Partition Key',
+      dataIndex: 'partitionkey',
+      key: 'partitionkey',
     },
     {
-      title: 'Address',
-      dataIndex: 'address',
-      key: 'address',
+      title: 'Partition Key Type',
+      dataIndex: 'partitionkeytype',
+      key: 'partitionkeytype',
     },
     {
-      title: 'Tags',
-      key: 'tags',
-      dataIndex: 'tags',
-      render: (_, { tags }) => (
-        <>
-          {tags.map((tag) => {
-            let color = tag.length > 5 ? 'geekblue' : 'green';
-            if (tag === 'loser') {
-              color = 'volcano';
-            }
-            return (
-              <Tag color={color} key={tag}>
-                {tag.toUpperCase()}
-              </Tag>
-            );
-          })}
-        </>
-      ),
+      title: 'Sort Key',
+      dataIndex: 'sortkey',
+      key: 'sortkey',
+    },
+    {
+      title: 'Sort Key Type',
+      dataIndex: 'sortkeytype',
+      key: 'sortkeytype',
     },
     {
       title: 'Action',
       key: 'action',
       render: (_, record) => (
         <Space size="middle">
-          <a>Invite {record.name}</a>
           <a>Delete</a>
         </Space>
       ),
     },
   ];
 
-  const data = [
-    {
-      key: '1',
-      name: 'John Brown',
-      age: 32,
-      address: 'New York No. 1 Lake Park',
-      tags: ['nice', 'developer'],
-    },
-    {
-      key: '2',
-      name: 'Jim Green',
-      age: 42,
-      address: 'London No. 1 Lake Park',
-      tags: ['loser'],
-    },
-    {
-      key: '3',
-      name: 'Joe Black',
-      age: 32,
-      address: 'Sidney No. 1 Lake Park',
-      tags: ['cool', 'teacher'],
-    },
-  ];
+  const {tableList,getTableLoading,loading} = useSelector(store => store.allTableReducer)
 
-export const AllTable = () => {
-    const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const dispatch = useDispatch();
 
   const showModal = () => {
     setIsModalOpen(true);
   };
 
-  const handleOk = (values) => {
+  const handleOk =async (value) => {
+    await dispatch(createTable(JSON.stringify(value)))
     setIsModalOpen(false);
     form.resetFields();
   };
@@ -95,6 +68,11 @@ export const AllTable = () => {
     form.resetFields();
   };
   const [form] = Form.useForm();
+
+  useEffect(() => {
+    dispatch(getAllTable())
+  },[loading])
+
   return (
 
     <div style={{textAlign:"right"}}>
@@ -103,7 +81,7 @@ export const AllTable = () => {
             <h2 style={{margin: 0}}>All Table</h2>
             <Button onClick={showModal} type="primary"><PlusOutlined /> Add Table</Button>
         </div>
-        <Table columns={columns} dataSource={data} />
+        <Table columns={columns} dataSource={tableList} />
     </div>
   )
 }

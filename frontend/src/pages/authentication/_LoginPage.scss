@@ -1,0 +1,25 @@
+.login-page{
+    display:flex;
+    align-items:center;
+    justify-content: center;
+    flex-direction:column;
+    height:100vh;
+    background: linear-gradient(120deg,#2980b9,#8e44ad);
+
+    .login-page__container{
+        background-color: white;
+        border-radius: 15px;
+
+        .login-page__heading{
+            text-align: center;
+            padding-block: 20px;
+            border-bottom: 2px solid rgb(218, 215, 215);
+        }
+
+        .login-form{
+            padding: 20px;
+            width: 500px;
+        }
+        
+    }
+}
