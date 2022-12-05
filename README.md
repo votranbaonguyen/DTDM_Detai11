@@ -21,8 +21,27 @@
 - Bước 2: Tạo sẵn bảng UserTable trong DynamoDB (Tạo trước một Record với dữ liệu như hình)
 ![Untitled](https://user-images.githubusercontent.com/112375064/205549132-9d569dd6-19f8-4281-9f70-36396b10bbab.png)
 
-- Bước 3: Thực hiện tạo các Lambda Function
-
+- Bước 3: Thực hiện tạo Lambda Function CreateTable
+- Bước 3.1: Trên AWS chọn Search, nhập “Lambda”  rồi chọn chức năng Lambda ta được như hình sau:
+![image](https://user-images.githubusercontent.com/74422751/205604485-6f5cac71-5dbf-4ccf-8a35-e2866ead4bc9.png)
+- Bước 3.2: Chọn **Create function**, ta bắt đầu tạo function: </br>
+Chọn **Author from scratch** </br>
+Nhập **Function name** </br>
+**Runtime** chọn **Node.js 18.x** </br>
+Ở **Architecture** chọn **x86_64** </br>
+Mở **Change default execution role** </br>
+Chọn **Use an existing role** </br>
+Ở **Existing role chọn LabRole** </br>
+Mở **Advanced Settings** </br>
+Chọn **Enable function URL** </br>
+Ở **Auth type** chọn **None** </br>
+Chọn **Configure cross-origin resource sharing (CORS)** </br>
+Cuối cùng chọn **Create function** </br>
+Ta được kết quả như hình sau: </br>
+![image](https://user-images.githubusercontent.com/74422751/205606645-92090ebf-44a8-410a-b5f9-442d990236c9.png) </br>
+Lưu lại **Function URL** để sử dụng cho **Front-end**
+- Bước 3.3: Ở phần **Code**, ta chọn file **index.mjs**, và paste **source code** của chức năng **CreateTable** vào. Lưu ý, **source code** của **CreateTable** được lưu tại thư mục backend/lambda_nodejs, trong đó ta sẽ thấy file CreateTable.txt chứa **source code** của **CreateTable**, các **REGION** hoặc **DEFAULT_REGION** trong **source code** ta thay bằng **Region** bạn mong muốn (có thể là vùng hiện tại của bạn), hiện tại là **"us-east-1"**
+- Bước 4: Thực hiện tạo các Lambda Funtion URL còn lại với cách làm tương tự như **Bước 3**
 ### 2. Chuẩn bị Front-End
 - Bước 1: Vào thư mục frontend/src/services/ mở file api.js lên bằng các phần mềm chuyên dụng để viết code, ở đây ta thực hiện dán các Function Url đã tạo ở bước trên tương ứng với tên của mỗi Function vào
 ![Untitled](https://user-images.githubusercontent.com/112375064/205549485-bd3a76b6-c0cf-4ee0-a796-286205a71ea3.png)
