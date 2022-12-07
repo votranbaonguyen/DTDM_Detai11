@@ -67,3 +67,10 @@ GetTableByUserId
 {
     "UserID": 1
 }
+
+///////////////////////////////////////////
+Register
+{
+    "UserName": "Us4",
+    "Password": "us4"
+}
