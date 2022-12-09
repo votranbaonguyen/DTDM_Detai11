@@ -3,6 +3,7 @@ import axios from "axios";
 import {
   CreateTableUrl,
   DeleteTableUrl,
+  GetAllTableByUserIDUrl,
   GetAllTableUrl,
 } from "../../services/api";
 import { poppupNoti } from "../../util/notification/Notification";
@@ -27,12 +28,14 @@ export const createTable = createAsyncThunk(
 export const getAllTable = createAsyncThunk(
   "alltable/getallltable",
   async (userid) => {
-    console.log(initialState.tableList)
-    const response = await fetch(GetAllTableUrl, {
+    const response = await fetch(GetAllTableByUserIDUrl, {
       method: "POST",
       body: userid,
     });
     if (response.status === 200) {
+  
+    }else{
+ 
     }
     return response.json();
   }
@@ -45,10 +48,16 @@ export const deleteTable = createAsyncThunk(
       method: "POST",
       body,
     });
+    // if (response.status === 200) {
+    //   poppupNoti.deleteTableSuccess();
+    // }
     if (response.status === 200) {
-      poppupNoti.deleteTableSuccess();
+       poppupNoti.deleteTableSuccess();
+       return body
+    }else{
+      return body
     }
-    return response.json();
+   
   }
 );
 
@@ -74,12 +83,13 @@ export const allTableSlice = createSlice({
     ///////////////////////////////////////////////////////
     /////////////Get All Table////////////////////////////
     builder.addCase(getAllTable.pending, (state) => {
-      state.getTableLoading = true;
+      state.loading = true;
     });
 
     builder.addCase(getAllTable.fulfilled, (state, action) => {
-        
+      try {
         let newTableList = [];
+        console.log(action.payload)
         newTableList = action.payload.map((table, index) => {
           return {
             tablename: table.tablename,
@@ -91,11 +101,15 @@ export const allTableSlice = createSlice({
           };
         });
         state.tableList = newTableList;
-      state.getTableLoading = false;
+      } catch (err) {
+        
+      }
+
+      state.loading = false;
     });
 
     builder.addCase(getAllTable.rejected, (state) => {
-      state.getTableLoading = false;
+      state.loading = false;
     });
 
     ///////////////////////////////////////////////////////

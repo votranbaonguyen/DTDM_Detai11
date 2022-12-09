@@ -126,8 +126,8 @@ export const RecordModal = ({ isModalOpen, handleOk, handleCancel, form, modalTy
                 }
                 <div style={{ textAlign: "right" }}>
                     <Button style={{ marginRight: "15px" }} onClick={handleCancel}>Cancel</Button>
-                    <Button type="primary" htmlType="submit" disabled={addLoading}>
-                        {addLoading ? <Spin size="small" /> : ""} {modalType}
+                    <Button type="primary" htmlType="submit" loading={loading}>
+                        {modalType}
                     </Button>
                 </div>
 

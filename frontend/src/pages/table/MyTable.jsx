@@ -18,7 +18,7 @@ export const MyTable = () => {
     navigate("/login")
   }
   const param = useParams()
-  const { items, atributes,baseAttr, addLoading } = useSelector(store => store.tableReducer)
+  const { items, atributes,baseAttr, loading } = useSelector(store => store.tableReducer)
   const dispatch = useDispatch()
   const renderColumns = () => {
     return atributes.map((atr) => {
@@ -125,7 +125,7 @@ export const MyTable = () => {
           setModalType("Add")
         }} type="primary"><PlusOutlined /> Add Record</Button>
       </div>
-      <Table columns={columns} dataSource={items} />
+      <Table columns={columns} dataSource={items} loading={loading}/>
     </div>
   )
 }

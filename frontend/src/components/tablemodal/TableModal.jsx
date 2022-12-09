@@ -150,8 +150,8 @@ export const TableModal = ({ isModalOpen, handleOk, handleCancel, form }) => {
 
                 <div style={{ textAlign: "right" }}>
                     <Button style={{ marginRight: "15px" }} onClick={handleCancel}>Cancel</Button>
-                    <Button type="primary" htmlType="submit" disabled={loading}>
-                        {loading ? <Spin size="small" /> : ""} Add
+                    <Button type="primary" htmlType="submit" loading={loading}>
+                        Add
                     </Button>
                 </div>
 

@@ -104,7 +104,6 @@ export const tableSlice = createSlice({
     });
 
     builder.addCase(addAndUpdateItem.fulfilled, (state,action) => {
-      console.log(action.payload)
       state.loading = true;
     });
 

@@ -53,7 +53,11 @@ export const AllTable = () => {
               await dispatch(deleteTable(JSON.stringify({
                 TableName: record.tablename
               })))
-
+              const b = {
+                UserID: userid
+              }
+              
+              dispatch(getAllTable(JSON.stringify(b)))
             }}
           >
             Delete
@@ -80,6 +84,11 @@ export const AllTable = () => {
     await dispatch(createTable(JSON.stringify(a)))
     setIsModalOpen(false);
     form.resetFields();
+    const b = {
+      UserID: userid
+    }
+
+    dispatch(getAllTable(JSON.stringify(b)))
   };
 
   const handleCancel = () => {
@@ -95,17 +104,17 @@ export const AllTable = () => {
 
     dispatch(getAllTable(JSON.stringify(a)))
 
-  }, [loading])
+  },[])
 
   return (
 
     <div style={{ textAlign: "right" }}>
-      <TableModal isModalOpen={isModalOpen} handleOk={handleOk} handleCancel={handleCancel} form={form} />
+      <TableModal isModalOpen={isModalOpen} handleOk={handleOk} handleCancel={handleCancel} form={form}  />
       <div style={{ display: "flex", justifyContent: "space-between", margin: "15px 30px" }}>
         <h2 style={{ margin: 0 }}>All Table</h2>
         <Button onClick={showModal} type="primary"><PlusOutlined /> Add Table</Button>
       </div>
-      <Table columns={columns} dataSource={tableList} />
+      <Table columns={columns} dataSource={tableList} loading={loading}/>
     </div>
   )
 }

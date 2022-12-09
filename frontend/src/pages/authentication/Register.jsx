@@ -1,34 +1,64 @@
 import { Button, Checkbox, Form, Input } from 'antd';
 
-import React from 'react'
+import React, { useState } from 'react'
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import { login } from '../../redux/authentication/authenticationSlice';
+import { login, register, removeRegisterBody } from '../../redux/authentication/authenticationSlice';
+import { poppupNoti } from '../../util/notification/Notification';
+import { RegisterModal } from './RegisterModal';
 
-export const Login = () => {
+export const Register = () => {
     const [form] = Form.useForm();
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    const {loading} = useSelector(store => store.authenticationReducer)
-    const onFinish = async (values)  => {
-        const a = {
-            ...values,
-            UserID: parseInt(values.UserID)
+    const [modalStatus, setModalStatus] = useState(false)
+    const { loading, registerBody } = useSelector(store => store.authenticationReducer)
+
+    const onFinish = async (values) => {
+        
+        if(values.Password === values.retypePassword){
+            const newData = {
+                UserName: values.UserName,
+                Password: values.Password
+            }
+            await dispatch(register(newData))
+        }else{
+            poppupNoti.registerFail()
         }
-        await dispatch(login(a))
-        if(localStorage.getItem("userid")){
-            navigate("/")
-        }
+        // if (localStorage.getItem("userid")) {
+        //     navigate("/")
+        // }
     };
     const onFinishFailed = (errorInfo) => {
-       
+
     };
+
+    const handleOk = () => {
+        navigate("/login")
+        setModalStatus(false)
+        dispatch(removeRegisterBody())
+    }
+
+    const handleCancel = () => {
+        navigate("/login")
+        setModalStatus(false)
+        dispatch(removeRegisterBody())
+    }
+
+    useEffect(() => {
+        
+     if(registerBody !== null){
+        setModalStatus(true)
+     }   
+    })
 
     return (
         <div className="login-page">
+            <RegisterModal isModalOpen={modalStatus} handleOk={handleOk} handleCancel={handleCancel}/>
             <div className="login-page__container">
                 <h1 className="login-page__heading">
-                    Login
+                    Register
                 </h1>
                 <Form
                     className='login-form'
@@ -47,20 +77,6 @@ export const Login = () => {
                     autoComplete="off"
                     form={form}
                 >
-                    <Form.Item
-                        label="UserID"
-                        name="UserID"
-                        labelCol={12}
-                        wrapperCol={12}
-                        rules={[
-                            {
-                                required: true,
-                                message: 'Please input your userid!',
-                            },
-                        ]}
-                    >
-                        <Input/>
-                    </Form.Item>
                     <Form.Item
                         label="Username"
                         name="UserName"
@@ -90,18 +106,32 @@ export const Login = () => {
                     >
                         <Input.Password />
                     </Form.Item>
+                    <Form.Item
+                        label="Re-type Password"
+                        name="retypePassword"
+                        labelCol={12}
+                        wrapperCol={12}
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Please re-type your password!',
+                            },
+                        ]}
+                    >
+                        <Input.Password />
+                    </Form.Item>
 
                     <Form.Item
-                       labelCol={0}
-                       wrapperCol={12}
+                        labelCol={0}
+                        wrapperCol={12}
 
                     >
                         <Button type="primary" htmlType="submit" loading={loading}>
-                            Login
+                            Register
                         </Button>
-                        <Link to="/register" style={{marginLeft:"20px"}}>
+                        <Link to="/login" style={{marginLeft:"20px"}}>
                             <Button type="primary" ghost>
-                                Register
+                                Login
                             </Button>
                         </Link>
                     </Form.Item>

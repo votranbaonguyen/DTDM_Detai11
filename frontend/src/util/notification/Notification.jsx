@@ -26,5 +26,21 @@ export const poppupNoti = {
 
     deleteItemSuccess: () => {
         notiBody("Delete item success","success")
-    }
+    },
+
+    registerSuccess: () => {
+        notiBody("Your new account has been created","success")
+    },
+
+    registerFail: () => {
+        notiBody("You password and re-type password are not the same","error")
+    },
+
+    loginSuccess: () => {
+        notiBody("Login success","success")
+    },
+
+    loginFail: () => {
+        notiBody("Your ID, Username or Password are wrong!","error")
+    },
 }
