@@ -54,11 +54,15 @@ export const handler = async(event, response) => {
           Password: body.Password,
         }
     }
+   
     const data = await ddbDocClient.send(new PutCommand(params));
     response = {
         statusCode: 200,
-        body: JSON.stringify('Sign Up Success!'),
-        //body: JSON.stringify(newRecordID + body.UserName + body.Password),
+        message: 'Sign Up Success!',
+        body: JSON.stringify( {
+      id: newRecordID,
+      username: body.UserName
+    }),
         //body: JSON.stringify(listUserName + listUserName.length),
     };
   } catch (err) {

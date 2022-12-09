@@ -13,11 +13,13 @@ export const handler = async(event,response) => {
             const params = { TableName: tablename }
             if(tablename.includes(body.UserID.toString() + "-")){
               const data = await ddbClient.send(new DescribeTableCommand(params));
-              const newTableData = {
-                tablename,
-                AttributeDefinitions: data.Table.AttributeDefinitions
+              if(data.Table.AttributeDefinitions){
+                  const newTableData = {
+                    tablename,
+                    AttributeDefinitions: data.Table.AttributeDefinitions
+                  }
+                  tableDataList.push(newTableData)
               }
-              tableDataList.push(newTableData)
             }
         }
         
