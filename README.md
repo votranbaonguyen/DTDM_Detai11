@@ -16,6 +16,9 @@
 
 ## Cách chạy project trên Local
 ## Link video hướng dẫn: https://youtu.be/d1uwv39nU0o
+## Cách chạy project trên AWS sử dụng Amazon S3
+## Link video hướng dẫn: https://youtu.be/i7wWo8rnAUo
+
 ### 1. Chuẩn bị Database và Back-End
 - **Bước 1:** Clone dự án về bằng link sau: https://github.com/votranbaonguyen/DTDM_Detai11.git
 - **Bước 2:** Tạo sẵn bảng UserTable trong DynamoDB (Tạo trước một Record với dữ liệu như hình)
