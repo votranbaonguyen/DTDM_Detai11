@@ -17,7 +17,7 @@
 ## Cách chạy project trên Local
 Link video hướng dẫn: https://youtu.be/d1uwv39nU0o
 
-## Cách chạy project trên AWS sử dụng Amazon S3
+## Cách deploy project trên AWS sử dụng Amazon S3
 Link video hướng dẫn: https://youtu.be/i7wWo8rnAUo
 
 ### 1. Chuẩn bị Database và Back-End
